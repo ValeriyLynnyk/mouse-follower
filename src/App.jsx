@@ -4,16 +4,26 @@ function App() {
   const [enabled, setEnabled] = useState(true)
   const [x, setX] = useState(0)
   const [y, setY] = useState(0)
-
+  
+  
   useEffect( () =>{
     console.log('Effect ', {enabled})
-    window.addEventListener('mousemove', (e) => {
-       setX(e.clientX - 15)
-       setY(e.clientY - 15)
-     }
-     )
-  }, [enabled])
+    
+    const handleMove = ({clientX, clientY}) => {
+      setX(clientX - 15)
+      setY(clientY - 15)
+    }    
 
+    enabled && window.addEventListener('mousemove', handleMove)
+
+    return () => {
+      setX(0)
+      setY(0)
+      window.removeEventListener('mousemove', handleMove)
+    }
+
+  }, [enabled])
+    
   return (
     <>
       <div className='bolita' 
@@ -26,7 +36,7 @@ function App() {
 
       <h3>Proyecto 3</h3>
       <button onClick={() => setEnabled(!enabled)}>
-        {enabled ? 'Activar' : 'Desactivar'} seguir puntero
+        {enabled ? 'Activar 🔥' : 'Desactivar 💦'}
       </button>
     </>
   )
